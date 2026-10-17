@@ -16,37 +16,36 @@ const MAX_PER_WINDOW = 5;
 const MAX_TRACKED = 5000;
 
 // Best-effort limiter: memory is per server instance. Use a shared store (Redis, Upstash) if abuse becomes real.
+// Map keeps insertion order, so re-inserting on every hit makes the first key the least recently used.
 const hits = new Map<string, number[]>();
 
-function limited(ip: string) {
+function limited(key: string) {
   const now = Date.now();
-  if (hits.size >= MAX_TRACKED) {
-    for (const [key, times] of hits) if (now - times[times.length - 1] >= WINDOW_MS) hits.delete(key);
-    if (hits.size >= MAX_TRACKED) hits.clear(); // under sustained flood, reset rather than grow without bound
-  }
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
   recent.push(now);
-  hits.set(ip, recent);
+  hits.delete(key);
+  hits.set(key, recent);
+  while (hits.size > MAX_TRACKED) hits.delete(hits.keys().next().value as string);
   return recent.length > MAX_PER_WINDOW;
 }
 
 /**
- * Client IP from headers the hosting platform sets itself. A raw x-forwarded-for can be forged by the caller,
- * so only its last hop (the one added by the nearest proxy) is used, and only as a fallback.
+ * Who is calling. Only a header the hosting platform overwrites is trusted: x-vercel-forwarded-for on Vercel, or the
+ * one named in TRUSTED_IP_HEADER behind your own proxy. Anything else could be forged by the caller, so it is
+ * ignored and everyone shares one bucket (stricter, never bypassable). IPv6 is grouped by /64 so one host
+ * cannot dodge the limit by rotating addresses within its own range.
  */
-function clientIp(req: Request) {
-  const h = req.headers;
-  return (
-    h.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-    h.get("x-real-ip")?.trim() ||
-    h.get("x-forwarded-for")?.split(",").at(-1)?.trim() ||
-    "local"
-  );
+function clientKey(req: Request) {
+  const name = process.env.VERCEL ? "x-vercel-forwarded-for" : process.env.TRUSTED_IP_HEADER;
+  const ip = (name && req.headers.get(name)?.split(",")[0]?.trim()) || "unknown";
+  if (!ip.includes(":")) return ip;
+  const groups = ip.split("::")[0].split(":").slice(0, 4);
+  return groups.join(":") + "::/64";
 }
 
 /** Responses carry a `code` the page translates, so this route never needs to know the visitor's language. */
 export async function POST(req: Request) {
-  if (limited(clientIp(req))) return NextResponse.json({ ok: false, code: "rate" }, { status: 429 });
+  if (limited(clientKey(req))) return NextResponse.json({ ok: false, code: "rate" }, { status: 429 });
 
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {

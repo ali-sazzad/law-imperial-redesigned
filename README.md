@@ -133,6 +133,7 @@ Copy `.env.example` to `.env.local`.
 | Variable | Purpose |
 |---|---|
 | `LEAD_WEBHOOK_URL` | Contact-form messages are sent here as JSON (Zapier, Make, n8n, HubSpot...). **Required in production**: if it is unset, the form tells the visitor to call instead, and nothing is logged. In development, messages are printed to the terminal. |
+| `TRUSTED_IP_HEADER` | Self-hosting only: the header your reverse proxy sets to the visitor IP, used for rate limiting. Not needed on Vercel. |
 
 ## Project structure
 
