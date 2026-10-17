@@ -17,22 +17,24 @@
 
 </div>
 
+> **Credit and scope.** [lawimperial.com](https://www.lawimperial.com) is the firm's real, live website, built by its own team, and it is the reference point for this exercise. It has not been touched or altered in any way. This repository is a redesign study that demonstrates my front-end and design approach; it is not a replacement and not affiliated with the firm.
+
 ## Before and after
 
 |  | Before | After |
 |---|---|---|
-| Site | **[lawimperial.com](https://www.lawimperial.com)**, the firm's current live site | **[Live demo](https://imperial-law-demo.vercel.app)** (this repository) |
+| Site | **[lawimperial.com](https://www.lawimperial.com)**, the firm's live site (reference) | **[Live demo](https://imperial-law-demo.vercel.app)** (this repository) |
 | Languages | English only | English and नेपाली, one tap to switch |
-| Phone layout | Page is 430 px wide on a 390 px screen, so it scrolls sideways | Fits the screen at every width tested (360 to 1440 px) |
-| Phone navigation | Menu opens inline and pushes the page down | Bottom bar (Call, Message, Menu) and a sheet that closes when you tap outside |
+| Phone layout | Page measures 430 px on a 390 px screen | Fits the screen at every width tested (360 to 1440 px) |
+| Phone navigation | Inline dropdown menu | Bottom bar (Call, Message, Menu) and a sheet that closes when you tap outside |
 | First load | About 103 requests | 16 requests |
 | Numbers and links in Nepali | Not available | Devanagari digits, translated labels, working tap-to-call |
 
-<sub>Original measured with Chrome DevTools on 17 October 2026 at 390 px (phone) and 1440 px (desktop). Request counts come from the browser's Performance API on first load.</sub>
+<sub>Reference site measured with Chrome DevTools on 17 October 2026 at 390 px (phone) and 1440 px (desktop). Request counts come from the browser's Performance API on first load.</sub>
 
 ## Why a redesign
 
-Most of the firm's clients are in Nepal and browse on their phones, many of them preferring Nepali. The original site is full of useful content, but it is English only, crowded on small screens, and heavy to load. This project keeps the firm's services and voice and rebuilds the experience around three goals:
+Most of the firm's clients are in Nepal and browse on their phones, many of them preferring Nepali. The firm's site carries a lot of valuable content, and it is English only. This study keeps the firm's services and voice and explores how the experience could be rebuilt around three goals:
 
 1. **Trust.** Look like a serious law firm in the first second.
 2. **Language.** Let anyone read every word, number and link in Nepali.
@@ -42,15 +44,15 @@ Most of the firm's clients are in Nepal and browse on their phones, many of them
 
 ### 1. Header and first screen
 
-The original opens with a contact and social bar, a slider and a dense block of justified text. The redesign opens with what the firm does, two clear actions, and the phone numbers beside them.
+The reference site opens with a contact and social bar and a hero slider. The redesign opens with what the firm does, two clear actions, and the phone numbers beside them.
 
-| Before ([lawimperial.com](https://www.lawimperial.com)) | After |
+| Before (reference: [lawimperial.com](https://www.lawimperial.com)) | After |
 |---|---|
 | <img src="docs/images/original-desktop-top.png" alt="Original site header and slider"> | <img src="docs/images/after-desktop-en.png" alt="Redesigned header and hero"> |
 
 ### 2. Language: English and नेपाली
 
-The original has no language option. Every page now exists in two languages at real URLs (`/en` and `/ne`), so links can be shared in either language and search engines index both. A visitor whose browser is set to Nepali lands on `/ne` automatically, and the choice is remembered.
+The reference site is English only. In the redesign every page exists in two languages at real URLs (`/en` and `/ne`), so links can be shared in either language and search engines index both. A visitor whose browser is set to Nepali lands on `/ne` automatically, and the choice is remembered.
 
 | English | नेपाली |
 |---|---|
@@ -60,7 +62,7 @@ When a reader picks Nepali, everything changes: all text, page title and descrip
 
 ### 3. Recognition and practice areas
 
-The original shows award logos and photo cards. In the capture two of the award images failed to load and showed only their alt text. The redesign presents recognition as readable text and all 16 practice areas as a scannable grid, each with an "Ask about this" link that pre-fills the contact form.
+The reference site shows award logos and photo cards. The redesign presents recognition as readable text and all 16 practice areas as a scannable grid, each with an "Ask about this" link that pre-fills the contact form.
 
 | Before | After |
 |---|---|
@@ -68,7 +70,7 @@ The original shows award logos and photo cards. In the capture two of the award 
 
 ### 4. Phone: header and menu
 
-On a phone the original stacks a contact line and eight social icons above the header, opens its menu inline so the page jumps down, and keeps a chat bubble floating over the text. The redesign keeps the three things a client needs under the thumb. **Menu** opens a bottom sheet that closes when you tap outside it, swipe it down, press Escape, or choose a link. It shows where you are on the page and offers one-tap call buttons.
+On a phone the reference site keeps contact details and social icons above the header and opens its menu inline. The redesign keeps the three things a client needs under the thumb. **Menu** opens a bottom sheet that closes when you tap outside it, swipe it down, press Escape, or choose a link. It shows where you are on the page and offers one-tap call buttons.
 
 | Before | Before (menu open) | After | After (menu open) |
 |---|---|---|---|
@@ -168,7 +170,7 @@ npx vercel --prod   # production
 
 - The Nepali translation should be reviewed by a native speaker or legal translator before launch.
 - Content such as names, numbers and rankings comes from the firm's public website and should be confirmed by the firm.
-- This is an independent redesign. The original site, [lawimperial.com](https://www.lawimperial.com), remains the firm's live website.
+- With thanks to the team behind [lawimperial.com](https://www.lawimperial.com): their live site is the reference for this study, is untouched, and remains the firm's official website.
 
 ## Author
 
