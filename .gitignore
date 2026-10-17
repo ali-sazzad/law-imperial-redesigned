@@ -1,0 +1,19 @@
+# dependencies and build output
+node_modules
+.next
+*.tsbuildinfo
+next-env.d.ts
+
+# environment and local tooling
+.env*.local
+.vercel
+.vercelignore
+.DS_Store
+*.log
+
+# local-only working files
+_backup-before-redesign
+.claude
+.remember
+CLAUDE.md
+AGENTS.md
